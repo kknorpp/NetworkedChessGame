@@ -87,6 +87,8 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 	}
 
 	void mouseReleased(DPoint dpoint) {
+		System.out.println("pressed point " + this.pressed_point);
+		System.out.println("released point " + dpoint);
 		if (ChessPieceMove.validMove(this, this.pressed_point, dpoint)) {
 
 			this.pressed_point = dpoint;

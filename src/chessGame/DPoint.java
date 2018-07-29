@@ -21,4 +21,9 @@ class DPoint implements Serializable {
 		double dy = secondPoint.y - this.y;
 		return new DPoint(dx, dy);
 	}
+
+	@Override
+	public String toString() {
+		return "(" + this.x + ", " + this.y + ")";
+	}
 }
