@@ -87,25 +87,45 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 	}
 
 	void mouseReleased(DPoint dpoint) {
-		this.pressed_point = dpoint;
-		if (this.selectedIndex >= 0) {
-			int xSelectLoc = (int) dpoint.x;
-			int ySelectLoc = (int) dpoint.y;
-			if (xSelectLoc >= 0 && ySelectLoc >= 0) {
-				this.pieces[this.selectedIndex].moveLoc(xSelectLoc, ySelectLoc);
-				if (this.pieces[this.selectedIndex].color == ColorType.White) {
-					this.playerColor = ColorType.Black;
+		if (ChessPieceMove.validMove(this, this.pressed_point, dpoint)) {
 
-				} else {
-					this.playerColor = ColorType.White;
+			this.pressed_point = dpoint;
+			if (this.selectedIndex >= 0) {
+				int xSelectLoc = (int) dpoint.x;
+				int ySelectLoc = (int) dpoint.y;
+				if (xSelectLoc >= 0 && ySelectLoc >= 0) {
+					this.pieces[this.selectedIndex].moveLoc(xSelectLoc, ySelectLoc);
+					if (this.pieces[this.selectedIndex].color == ColorType.White) {
+						this.playerColor = ColorType.Black;
+
+					} else {
+						this.playerColor = ColorType.White;
+					}
 				}
 			}
+		} else {
+			this.dragged_point = this.pressed_point;
+			this.selectedIndex = -1;
 		}
+	}
+
+	public Piece getPiece(DPoint location) {
+
+		int xSelectLoc = (int) location.x;
+		int ySelectLoc = (int) location.y;
+
+		for (int i = 0; i < this.pieces.length; i++) {
+			if (this.pieces[i].areYouHere(xSelectLoc, ySelectLoc)) {
+				return this.pieces[i];
+			}
+		}
+		return null;
 	}
 
 	@Override
 	public Object process(Object ob) {
 		ChessGameInput chessGameInput = (ChessGameInput) ob;
+		System.out.println(chessGameInput.sendersName);
 		switch (chessGameInput.cmd) {
 		case ChessGameInput.MOUSE_PRESSED:
 			mousePressed(chessGameInput.dpoint);
