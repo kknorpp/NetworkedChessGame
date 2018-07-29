@@ -121,6 +121,16 @@ public class ChessGameInterface extends JFrame implements GameNet_UserInterface 
 		}
 
 		@Override
+		public void mouseReleased(MouseEvent e) {
+
+			DPoint dpoint = ChessGameInterface.this.boardDimensions.getDpoint(e.getX(), e.getY());
+			if (dpoint != null) {
+				ChessGameInterface.this.chessGameInput.setMouseCmd(ChessGameInput.MOUSE_RELEASED, dpoint);
+				ChessGameInterface.this.myGamePlayer.sendMessage(ChessGameInterface.this.chessGameInput);
+			}
+		}
+
+		@Override
 		public void mouseDragged(MouseEvent e) {
 
 			DPoint dpoint = ChessGameInterface.this.boardDimensions.getDpoint(e.getX(), e.getY());
