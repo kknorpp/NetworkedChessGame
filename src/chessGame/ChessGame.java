@@ -93,11 +93,14 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 			if (this.selectedIndex >= 0) {
 				int xSelectLoc = (int) dpoint.x;
 				int ySelectLoc = (int) dpoint.y;
+
 				if (xSelectLoc >= 0 && ySelectLoc >= 0) {
+
+					// remove piece logic here
+					removePiece(dpoint);
 					this.pieces[this.selectedIndex].moveLoc(xSelectLoc, ySelectLoc);
 					if (this.pieces[this.selectedIndex].color == ColorType.White) {
 						this.playerColor = ColorType.Black;
-
 					} else {
 						this.playerColor = ColorType.White;
 					}
@@ -120,6 +123,23 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 			}
 		}
 		return null;
+	}
+
+	public void removePiece(DPoint location) {
+		int xSelectLoc = (int) location.x;
+		int ySelectLoc = (int) location.y;
+		int piecesRemoved = 0;
+		for (int i = 0; i < this.pieces.length; i++) {
+			if (this.pieces[i].areYouHere(xSelectLoc, ySelectLoc)) {
+
+				this.pieces[i] = this.pieces[this.pieces.length - 1];
+
+				piecesRemoved++;
+			}
+		}
+		Piece[] newPieces = new Piece[this.pieces.length - piecesRemoved];
+		System.arraycopy(this.pieces, 0, newPieces, 0, this.pieces.length - piecesRemoved);
+		this.pieces = newPieces;
 	}
 
 	@Override
