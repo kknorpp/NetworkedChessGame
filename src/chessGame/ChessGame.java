@@ -3,6 +3,7 @@ package chessGame;
 import java.awt.Graphics;
 import java.io.Serializable;
 
+import gameNet.GameControl;
 import gameNet.GameNet_CoreGame;
 
 public class ChessGame extends GameNet_CoreGame implements Serializable {
@@ -13,6 +14,9 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 	private DPoint pressed_point = new DPoint();
 	private DPoint dragged_point = new DPoint();
 
+	// player color
+	private ColorType playerColor = ColorType.White;
+
 	public ChessGame() {
 
 		int index = 0;
@@ -21,7 +25,7 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 			this.pieces[index++] = new Piece(PieceType.Pawn, ColorType.Black, i, 1);
 		}
 		for (int i = 0; i < 8; i++) {
-			this.pieces[index++] = new Piece(PieceType.Pawn, ColorType.Black, i, 6);
+			this.pieces[index++] = new Piece(PieceType.Pawn, ColorType.White, i, 6);
 		}
 
 		PieceType[] startingKingRow = { PieceType.Rook, PieceType.Knight, PieceType.Bishop, PieceType.Queen,
@@ -33,6 +37,12 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 		{
 			this.pieces[index++] = new Piece(startingKingRow[i], ColorType.White, i, 7);
 		}
+
+	}
+
+	@Override
+	public void startGame(GameControl gameControl) {
+		System.out.println("Starting the epic game of chess");
 
 	}
 
@@ -51,6 +61,7 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 	}
 
 	void mousePressed(DPoint dpoint) {
+		System.out.println("player color" + this.playerColor);
 		this.pressed_point = dpoint;
 		this.dragged_point = dpoint;
 
@@ -58,12 +69,14 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 		int ySelectLoc = (int) dpoint.y;
 
 		for (int i = 0; i < this.pieces.length; i++) {
-			if (this.pieces[i].areYouHere(xSelectLoc, ySelectLoc)) {
-				;
-			}
-			{
+			if (this.pieces[i].color == this.playerColor && this.pieces[i].areYouHere(xSelectLoc, ySelectLoc)) {
 				this.selectedIndex = i;
 				break;
+			} else {
+				if (this.pieces[i].color != this.playerColor && this.pieces[i].areYouHere(xSelectLoc, ySelectLoc)) {
+					this.selectedIndex = -1;
+					break;
+				}
 			}
 		}
 	}
@@ -80,6 +93,12 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 			int ySelectLoc = (int) dpoint.y;
 			if (xSelectLoc >= 0 && ySelectLoc >= 0) {
 				this.pieces[this.selectedIndex].moveLoc(xSelectLoc, ySelectLoc);
+				if (this.pieces[this.selectedIndex].color == ColorType.White) {
+					this.playerColor = ColorType.Black;
+
+				} else {
+					this.playerColor = ColorType.White;
+				}
 			}
 		}
 	}
