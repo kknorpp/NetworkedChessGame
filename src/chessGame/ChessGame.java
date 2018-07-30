@@ -61,7 +61,7 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 	}
 
 	void mousePressed(DPoint dpoint) {
-		System.out.println("player color" + this.playerColor);
+		// System.out.println("player color" + this.playerColor);
 		this.pressed_point = dpoint;
 		this.dragged_point = dpoint;
 
@@ -87,8 +87,8 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 	}
 
 	void mouseReleased(DPoint dpoint) {
-		System.out.println("pressed point " + this.pressed_point);
-		System.out.println("released point " + dpoint);
+		// System.out.println("pressed point " + this.pressed_point);
+		// System.out.println("released point " + dpoint);
 		if (ChessPieceMove.validMove(this, this.pressed_point, dpoint)) {
 
 			this.pressed_point = dpoint;
@@ -151,7 +151,7 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 	@Override
 	public Object process(Object ob) {
 		ChessGameInput chessGameInput = (ChessGameInput) ob;
-		System.out.println(chessGameInput.sendersName);
+		// System.out.println(chessGameInput.sendersName);
 		switch (chessGameInput.cmd) {
 		case ChessGameInput.MOUSE_PRESSED:
 			mousePressed(chessGameInput.dpoint);
@@ -168,5 +168,15 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 		}
 		return new ChessGameOutput(this);
 
+	}
+
+	public boolean isLose(ColorType loseColor) {
+		for (int i = 0; i < this.pieces.length; i++) {
+			if (this.pieces[i].pieceType.equals(PieceType.King) && this.pieces[i].color == loseColor) {
+				return false;
+			}
+
+		}
+		return true;
 	}
 }

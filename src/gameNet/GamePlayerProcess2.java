@@ -44,7 +44,7 @@ class GamePlayerProcess2 extends Thread {
 
 			this.mom.removeMe(this.myIndex); // just remove me
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 
 	}// end of run routine

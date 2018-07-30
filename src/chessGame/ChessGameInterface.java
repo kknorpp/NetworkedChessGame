@@ -37,7 +37,7 @@ public class ChessGameInterface extends JFrame implements GameNet_UserInterface 
 		addMouseMotionListener(ml);
 
 		addWindowListener(new Termination());
-		setResizable(true);
+		// setResizable(true);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class ChessGameInterface extends JFrame implements GameNet_UserInterface 
 				int x = left + j * square_width;
 				int y = top + i * square_height;
 				if ((i + j) % 2 == 1) {
-					g.setColor(Color.lightGray);
+					g.setColor(new Color(10, 100, 220));
 					g.fillRect(x, y, square_width, square_height);
 
 				} else {

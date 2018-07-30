@@ -252,12 +252,12 @@ public class ChessPieceMove {
 		int x2 = (int) to.x;
 		int y2 = (int) to.y;
 
-		if (ColorType.Black == chessGame.getPiece(from).color) {
+		if ((ColorType.Black == chessGame.getPiece(from).color)) {
 
 			if (y + 1 == y2 && x == x2) {
 				return true;
 			}
-			if (y + 2 == 3 && x == x2) {
+			if (y + 2 == y2 && x == x2 && y2 <= 3) {
 				return true;
 			}
 			if (chessGame.isPieceOpen(to) != true) {
@@ -277,14 +277,13 @@ public class ChessPieceMove {
 			if (y - 1 == y2 && x == x2) {
 				return true;
 			}
-			if (y - 2 == 4 && x == x2) {
+			if (y - 2 == y2 && x == x2 && y2 >= 4) {
 				return true;
 			}
 			if (chessGame.isPieceOpen(to) != true) {
 				Piece destinationPiece = chessGame.getPiece(to);
 				if (destinationPiece.color == ColorType.White) {
 					return false;
-
 				}
 				if (x + 1 == x2 && y - 1 == y2) {
 					return true;
