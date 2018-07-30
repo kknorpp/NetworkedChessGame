@@ -37,7 +37,7 @@ public class ChessGameInterface extends JFrame implements GameNet_UserInterface 
 		addMouseMotionListener(ml);
 
 		addWindowListener(new Termination());
-		// setResizable(false);
+		setResizable(true);
 	}
 
 	@Override

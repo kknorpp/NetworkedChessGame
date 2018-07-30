@@ -11,6 +11,9 @@ public class ChessPieceMove {
 		}
 		switch (movedPiece.pieceType) {
 		case Bishop:
+			if (bishopMove(chessGame, from, to) != true) {
+				return false;
+			}
 
 			break;
 		case King:
@@ -25,8 +28,14 @@ public class ChessPieceMove {
 			}
 			break;
 		case Pawn:
+			if (pawnMove(chessGame, from, to) != true) {
+				return false;
+			}
 			break;
 		case Queen:
+			if (queenMove(chessGame, from, to) != true) {
+				return false;
+			}
 			break;
 		case Rook:
 			if (rookMove(chessGame, from, to) != true) {
@@ -37,28 +46,50 @@ public class ChessPieceMove {
 			break;
 
 		}
+
 		// if open move to space
-
 		Piece destinationPiece = chessGame.getPiece(to);
-
-		boolean isValid = destinationPiece == null;
 		if (destinationPiece == null) {
 			return true;
 		}
-		/// if moved piece is black and destination has a white piece. if a valid move
-		/// remove the white piece
+		// if moved piece is black and destination has a white piece. if a valid move
+		// remove the white piece
+
 		// if moved piece is white and destination is black. if a valid move remove the
-		/// black piece
+		// black piece
+
 		// if moved piece is the same color as a piece in an occupied space move is
-		/// invalid
+		// invalid
 
 		if (movedPiece.color == destinationPiece.color) {
 			return false;
-
 		} else {
 			return true;
 		}
+	}
 
+	public static boolean queenMove(ChessGame chessGame, DPoint from, DPoint to) {
+		int x = (int) from.x;
+		int y = (int) from.y;
+		int x2 = (int) to.x;
+		int y2 = (int) to.y;
+
+		return rookMove(chessGame, from, to) || bishopMove(chessGame, from, to);
+		// for (int i = 1; i < 9; i++) {
+		// if ((x + i == x2 && y + i == y2) || (x + i == x2 && y == y2)) {
+		// return true;
+		// }
+		// if ((x - i == x2 && y - i == y2) || (x - i == x2 && y == y2)) {
+		// return true;
+		// }
+		// if ((x + i == x2 && y - i == y2) || (y + i == y2 && x == x2)) {
+		// return true;
+		// }
+		// if ((x - i == x2 && y + i == y2) || (y - i == y2 && x == x2)) {
+		// return true;
+		// }
+		// }
+		// return false;
 	}
 
 	public static boolean kingMove(ChessGame chessGame, DPoint from, DPoint to) {
@@ -93,6 +124,50 @@ public class ChessPieceMove {
 		return false;
 	}
 
+	public static boolean bishopMove(ChessGame chessGame, DPoint from, DPoint to) {
+		int x = (int) from.x;
+		int y = (int) from.y;
+		int x2 = (int) to.x;
+		int y2 = (int) to.y;
+
+		for (int i = 1; i < 9; i++) {
+			if (x + i == x2 && y + i == y2) {
+				for (int j = 1; j < i; j++) {
+					if (chessGame.getPiece(new DPoint(x + j, y + j)) != null) {
+						return false;
+					}
+				}
+				return true;
+
+			}
+			if (x - i == x2 && y - i == y2) {
+				for (int j = 1; j < i; j++) {
+					if (chessGame.getPiece(new DPoint(x - j, y - j)) != null) {
+						return false;
+					}
+				}
+				return true;
+			}
+			if (x + i == x2 && y - i == y2) {
+				for (int j = 1; j < i; j++) {
+					if (chessGame.getPiece(new DPoint(x + j, y - j)) != null) {
+						return false;
+					}
+				}
+				return true;
+			}
+			if (x - i == x2 && y + i == y2) {
+				for (int j = 1; j < i; j++) {
+					if (chessGame.getPiece(new DPoint(x - j, y + j)) != null) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static boolean rookMove(ChessGame chessGame, DPoint from, DPoint to) {
 		int x = (int) from.x;
 		int y = (int) from.y;
@@ -100,29 +175,38 @@ public class ChessPieceMove {
 		int y2 = (int) to.y;
 		for (int i = 1; i < 9; i++) {
 			if (x + i == x2 && y == y2) {
+				for (int j = 1; j < i; j++) {
+					if (chessGame.getPiece(new DPoint(x + j, y)) != null) {
+						return false;
+					}
+				}
 				return true;
 
 			}
 			if (x - i == x2 && y == y2) {
+				for (int j = 1; j < i; j++) {
+					if (chessGame.getPiece(new DPoint(x - j, y)) != null) {
+						return false;
+					}
+				}
 				return true;
 			}
 
 			if (y + i == y2 && x == x2) {
+				for (int j = 1; j < i; j++) {
+					if (chessGame.getPiece(new DPoint(x, y + j)) != null) {
+						return false;
+					}
+				}
 				return true;
+
 			}
 			if (y - i == y2 && x == x2) {
-				return true;
-			}
-			if (chessGame.getPiece(new DPoint(x + i, y)) != null) {
-				return true;
-			}
-			if (chessGame.getPiece(new DPoint(x - i, y)) != null) {
-				return true;
-			}
-			if (chessGame.getPiece(new DPoint(x, y + i)) != null) {
-				return true;
-			}
-			if (chessGame.getPiece(new DPoint(x, y - i)) != null) {
+				for (int j = 1; j < i; j++) {
+					if (chessGame.getPiece(new DPoint(x, y - j)) != null) {
+						return false;
+					}
+				}
 				return true;
 			}
 		}
@@ -158,6 +242,58 @@ public class ChessPieceMove {
 		}
 		if (x + 1 == x2 && y + 2 == y2) {
 			return true;
+		}
+		return false;
+	}
+
+	public static boolean pawnMove(ChessGame chessGame, DPoint from, DPoint to) {
+		int x = (int) from.x;
+		int y = (int) from.y;
+		int x2 = (int) to.x;
+		int y2 = (int) to.y;
+
+		if (ColorType.Black == chessGame.getPiece(from).color) {
+
+			if (y + 1 == y2 && x == x2) {
+				return true;
+			}
+			if (y + 2 == 3 && x == x2) {
+				return true;
+			}
+			if (chessGame.isPieceOpen(to) != true) {
+				Piece destinationPiece = chessGame.getPiece(to);
+				if (destinationPiece.color == ColorType.Black) {
+					return false;
+
+				}
+				if (x + 1 == x2 && y + 1 == y2) {
+					return true;
+				}
+				if (x - 1 == x2 && y + 1 == y2) {
+					return true;
+				}
+			}
+		} else {
+			if (y - 1 == y2 && x == x2) {
+				return true;
+			}
+			if (y - 2 == 4 && x == x2) {
+				return true;
+			}
+			if (chessGame.isPieceOpen(to) != true) {
+				Piece destinationPiece = chessGame.getPiece(to);
+				if (destinationPiece.color == ColorType.White) {
+					return false;
+
+				}
+				if (x + 1 == x2 && y - 1 == y2) {
+					return true;
+				}
+				if (x - 1 == x2 && y - 1 == y2) {
+					return true;
+				}
+			}
+
 		}
 		return false;
 	}

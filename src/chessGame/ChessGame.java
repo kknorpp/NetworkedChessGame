@@ -114,6 +114,10 @@ public class ChessGame extends GameNet_CoreGame implements Serializable {
 		}
 	}
 
+	public boolean isPieceOpen(DPoint dpoint) {
+		return getPiece(dpoint) == null;
+	}
+
 	public Piece getPiece(DPoint location) {
 
 		int xSelectLoc = (int) location.x;
